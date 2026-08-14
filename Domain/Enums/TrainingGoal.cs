@@ -5,6 +5,8 @@
         Strength,
         Hypertrophy,
         Endurance,
-        GeneralFitness
+        GeneralFitness,
+        MuscleGain,
+        WeightLoss
     }
 }

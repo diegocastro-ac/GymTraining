@@ -6,9 +6,17 @@ using Infrastructure.Repositories;
 var userRepository = new InMemoryUserRepository();
 
 var userService = new UserService(userRepository);
+var routineService = new RoutineService(userRepository);
 
 var session = new AppSession();
 
-var app = new ConsoleApp(userService, session);
+var routineMenu = new RoutineMenu(
+    routineService,
+    session);
+
+var app = new ConsoleApp(
+    userService,
+    session,
+    routineMenu);
 
 app.Run();

@@ -7,13 +7,16 @@ public class ConsoleApp
 {
     private readonly UserService _userService;
     private readonly AppSession _session;
+    private readonly RoutineMenu _routineMenu;
 
     public ConsoleApp(
-        UserService userService,
-        AppSession session)
+    UserService userService,
+    AppSession session,
+    RoutineMenu routineMenu)
     {
         _userService = userService;
         _session = session;
+        _routineMenu = routineMenu;
     }
 
     public void Run()
@@ -27,42 +30,86 @@ public class ConsoleApp
             Console.WriteLine("=== Gym Training ===");
             Console.WriteLine();
 
-            if (_session.CurrentUser is not null)
+            if (_session.CurrentUser is null)
             {
-                Console.WriteLine(
-                    $"Current user: {_session.CurrentUser.Name}");
-                Console.WriteLine();
+                running = ShowUserSelectionMenu();
             }
-
-            Console.WriteLine("1. Create user");
-            Console.WriteLine("2. Select user");
-            Console.WriteLine("3. Exit");
-            Console.WriteLine();
-
-            Console.Write("Select an option: ");
-
-            var option = Console.ReadLine();
-
-            switch (option)
+            else
             {
-                case "1":
-                    CreateUser();
-                    break;
-
-                case "2":
-                    SelectUser();
-                    break;
-
-                case "3":
-                    running = false;
-                    break;
-
-                default:
-                    Console.WriteLine("Invalid option.");
-                    Console.ReadKey();
-                    break;
+                running = ShowMainMenu();
             }
         }
+    }
+
+    private bool ShowUserSelectionMenu()
+    {
+        Console.WriteLine("1. Create user");
+        Console.WriteLine("2. Select user");
+        Console.WriteLine("3. Exit");
+        Console.WriteLine();
+
+        Console.Write("Select an option: ");
+
+        var option = Console.ReadLine();
+
+        switch (option)
+        {
+            case "1":
+                CreateUser();
+                return true;
+
+            case "2":
+                SelectUser();
+                return true;
+
+            case "3":
+                return false;
+
+            default:
+                Console.WriteLine("Invalid option.");
+                Console.ReadKey();
+                return true;
+        }
+    }
+
+    private bool ShowMainMenu()
+    {
+        Console.WriteLine(
+            $"Current user: {_session.CurrentUser!.Name}");
+
+        Console.WriteLine();
+        Console.WriteLine("1. Manage routines");
+        Console.WriteLine("2. Change user");
+        Console.WriteLine("3. Exit");
+        Console.WriteLine();
+
+        Console.Write("Select an option: ");
+
+        var option = Console.ReadLine();
+
+        switch (option)
+        {
+            case "1":
+                ManageRoutines();
+                return true;
+
+            case "2":
+                _session.ClearUser();
+                return true;
+
+            case "3":
+                return false;
+
+            default:
+                Console.WriteLine("Invalid option.");
+                Console.ReadKey();
+                return true;
+        }
+    }
+
+    private void ManageRoutines()
+    {
+        _routineMenu.Run();
     }
 
     private void CreateUser()
