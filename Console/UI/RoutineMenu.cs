@@ -7,13 +7,16 @@ public class RoutineMenu
 {
     private readonly RoutineService _routineService;
     private readonly AppSession _session;
+    private readonly ExerciseMenu _exerciseMenu;
 
     public RoutineMenu(
-        RoutineService routineService,
-        AppSession session)
+    RoutineService routineService,
+    AppSession session,
+    ExerciseMenu exerciseMenu)
     {
         _routineService = routineService;
         _session = session;
+        _exerciseMenu = exerciseMenu;
     }
 
     public void Run()
@@ -29,7 +32,8 @@ public class RoutineMenu
 
             Console.WriteLine("1. Create routine");
             Console.WriteLine("2. View routines");
-            Console.WriteLine("3. Back");
+            Console.WriteLine("3. Manage routine");
+            Console.WriteLine("4. Back");
             Console.WriteLine();
 
             Console.Write("Select an option: ");
@@ -47,6 +51,10 @@ public class RoutineMenu
                     break;
 
                 case "3":
+                    ManageRoutine();
+                    break;
+
+                case "4":
                     running = false;
                     break;
 
@@ -150,6 +158,71 @@ public class RoutineMenu
                 number++;
             }
         }
+
+        Console.WriteLine();
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private void ManageRoutine()
+    {
+        var user = _session.CurrentUser;
+
+        if (user is null)
+        {
+            return;
+        }
+
+        if (user.Routines.Count == 0)
+        {
+            Console.WriteLine("No routines registered.");
+            Console.ReadKey();
+            return;
+        }
+
+        Console.Clear();
+
+        Console.WriteLine("=== Select Routine ===");
+        Console.WriteLine();
+
+        var routines = user.Routines.ToList();
+
+        for (var i = 0; i < routines.Count; i++)
+        {
+            Console.WriteLine(
+                $"{i + 1}. {routines[i].Name} - {routines[i].TrainingGoal}");
+        }
+
+        Console.WriteLine();
+        Console.Write("Select a routine: ");
+
+        var input = Console.ReadLine();
+
+        if (!int.TryParse(input, out var selection) ||
+            selection < 1 ||
+            selection > routines.Count)
+        {
+            Console.WriteLine("Invalid selection.");
+            Console.ReadKey();
+            return;
+        }
+
+        var selectedRoutine = routines[selection - 1];
+
+        _session.SelectRoutine(selectedRoutine);
+
+        _exerciseMenu.Run();
+
+        _session.ClearRoutine();
+
+        Console.Clear();
+
+        Console.WriteLine(
+            $"=== {selectedRoutine.Name} ===");
+
+        Console.WriteLine();
+        Console.WriteLine(
+            $"Goal: {selectedRoutine.TrainingGoal}");
 
         Console.WriteLine();
         Console.WriteLine("Press any key to continue...");
