@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Factories;
 using Application.Services;
 
 namespace GymTraining.ConsoleApp.UI;
@@ -8,12 +9,18 @@ public class RoutineMenu
     private readonly RoutineService _routineService;
     private readonly AppSession _session;
     private readonly ExerciseMenu _exerciseMenu;
+    private readonly RoutineGeneratorResolver _generatorResolver;
 
-    public RoutineMenu(RoutineService routineService, AppSession session, ExerciseMenu exerciseMenu)
+    public RoutineMenu(
+        RoutineService routineService,
+        AppSession session,
+        ExerciseMenu exerciseMenu,
+        RoutineGeneratorResolver generatorResolver)
     {
         _routineService = routineService;
         _session = session;
         _exerciseMenu = exerciseMenu;
+        _generatorResolver = generatorResolver;
     }
 
     public void Run()
@@ -30,7 +37,8 @@ public class RoutineMenu
             Console.WriteLine("1. Create routine");
             Console.WriteLine("2. View routines");
             Console.WriteLine("3. Manage routine");
-            Console.WriteLine("4. Back");
+            Console.WriteLine("4. Generate routine");
+            Console.WriteLine("5. Back");
             Console.WriteLine();
 
             Console.Write("Select an option: ");
@@ -52,6 +60,10 @@ public class RoutineMenu
                     break;
 
                 case "4":
+                    GenerateRoutine();
+                    break;
+
+                case "5":
                     running = false;
                     break;
 
@@ -80,18 +92,7 @@ public class RoutineMenu
         Console.Write("Name: ");
         var name = Console.ReadLine();
 
-        Console.WriteLine();
-        Console.WriteLine("Training goal:");
-        Console.WriteLine("1. General Fitness");
-        Console.WriteLine("2. Strength");
-        Console.WriteLine("3. Muscle Gain");
-        Console.WriteLine("4. Weight Loss");
-        Console.WriteLine();
-
-        Console.Write("Select a goal: ");
-        var goalInput = Console.ReadLine();
-
-        if (!TryParseTrainingGoal(goalInput, out var goal))
+        if (!SelectGoal(out var goal))
         {
             Console.WriteLine("Invalid training goal.");
             Console.ReadKey();
@@ -114,6 +115,60 @@ public class RoutineMenu
                 Console.WriteLine();
                 Console.WriteLine(
                     $"Routine created successfully: {routine.Name}");
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine();
+            Console.WriteLine(ex.Message);
+        }
+
+        Console.ReadKey();
+    }
+
+    private void GenerateRoutine()
+    {
+        var user = _session.CurrentUser;
+
+        if (user is null)
+        {
+            return;
+        }
+
+        Console.Clear();
+
+        Console.WriteLine("=== Generate Routine ===");
+        Console.WriteLine();
+
+        Console.Write("Name: ");
+        var name = Console.ReadLine();
+
+        if (!SelectGoal(out var goal))
+        {
+            Console.WriteLine("Invalid training goal.");
+            Console.ReadKey();
+            return;
+        }
+
+        try
+        {
+            var generator = _generatorResolver.Resolve(goal);
+
+            var routine = generator.Generate(user, name ?? string.Empty);
+
+            Console.WriteLine();
+            Console.WriteLine($"Routine generated successfully: {routine.Name}");
+            Console.WriteLine($"Goal: {routine.TrainingGoal}");
+            Console.WriteLine();
+
+            var number = 1;
+
+            foreach (var exercise in routine.Exercises)
+            {
+                Console.WriteLine($"{number}. {exercise.Name}");
+                Console.WriteLine($"   {exercise.Execute()}");
+
+                number++;
             }
         }
         catch (ArgumentException ex)
@@ -222,19 +277,42 @@ public class RoutineMenu
         Console.ReadKey();
     }
 
+    private static bool SelectGoal(out Domain.Enums.TrainingGoal goal)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Training goal:");
+        Console.WriteLine("1. Strength");
+        Console.WriteLine("2. Hypertrophy");
+        Console.WriteLine("3. Endurance");
+        Console.WriteLine("4. General Fitness");
+        Console.WriteLine("5. Muscle Gain");
+        Console.WriteLine("6. Weight Loss");
+        Console.WriteLine();
+
+        Console.Write("Select a goal: ");
+
+        var goalInput = Console.ReadLine();
+
+        return TryParseTrainingGoal(goalInput, out goal);
+    }
+
     private static bool TryParseTrainingGoal(string? input, out Domain.Enums.TrainingGoal goal)
     {
         goal = default;
 
         return input switch
         {
-            "1" => SetGoal(Domain.Enums.TrainingGoal.GeneralFitness, out goal),
+            "1" => SetGoal(Domain.Enums.TrainingGoal.Strength, out goal),
 
-            "2" => SetGoal(Domain.Enums.TrainingGoal.Strength, out goal),
+            "2" => SetGoal(Domain.Enums.TrainingGoal.Hypertrophy, out goal),
 
-            "3" => SetGoal(Domain.Enums.TrainingGoal.MuscleGain, out goal),
+            "3" => SetGoal(Domain.Enums.TrainingGoal.Endurance, out goal),
 
-            "4" => SetGoal(Domain.Enums.TrainingGoal.WeightLoss, out goal),
+            "4" => SetGoal(Domain.Enums.TrainingGoal.GeneralFitness, out goal),
+
+            "5" => SetGoal(Domain.Enums.TrainingGoal.MuscleGain, out goal),
+
+            "6" => SetGoal(Domain.Enums.TrainingGoal.WeightLoss, out goal),
 
             _ => false
         };
