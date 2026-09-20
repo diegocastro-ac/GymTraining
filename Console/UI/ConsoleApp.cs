@@ -184,10 +184,11 @@ public class ConsoleApp
             return;
         }
 
-        _session.SelectUser(userList[selection - 1]);
+        var selectedUser = userList[selection - 1];
 
-        Console.WriteLine(
-            $"User selected: {_session.CurrentUser.Name}");
+        _session.SelectUser(selectedUser);
+
+        Console.WriteLine($"User selected: {selectedUser.Name}");
 
         Console.ReadKey();
     }
