@@ -11,18 +11,9 @@ var exerciseService = new ExerciseService(userRepository);
 
 var session = new AppSession();
 
-var exerciseMenu = new ExerciseMenu(
-    exerciseService,
-    session);
+var exerciseMenu = new ExerciseMenu(exerciseService, session);
+var routineMenu = new RoutineMenu(routineService, session, exerciseMenu);
 
-var routineMenu = new RoutineMenu(
-    routineService,
-    session,
-    exerciseMenu);
-
-var app = new ConsoleApp(
-    userService,
-    session,
-    routineMenu);
+var app = new ConsoleApp(userService, session, routineMenu);
 
 app.Run();

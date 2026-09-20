@@ -9,9 +9,7 @@ public class ExerciseMenu
     private readonly ExerciseService _exerciseService;
     private readonly AppSession _session;
 
-    public ExerciseMenu(
-        ExerciseService exerciseService,
-        AppSession session)
+    public ExerciseMenu(ExerciseService exerciseService, AppSession session)
     {
         _exerciseService = exerciseService;
         _session = session;
@@ -32,8 +30,7 @@ public class ExerciseMenu
                 return;
             }
 
-            Console.WriteLine(
-                $"=== {routine.Name} ===");
+            Console.WriteLine($"=== {routine.Name} ===");
 
             Console.WriteLine();
 
@@ -79,8 +76,7 @@ public class ExerciseMenu
 
         Console.Clear();
 
-        Console.WriteLine(
-            $"=== Exercises: {routine.Name} ===");
+        Console.WriteLine($"=== Exercises: {routine.Name} ===");
 
         Console.WriteLine();
 
@@ -94,11 +90,9 @@ public class ExerciseMenu
 
             foreach (var exercise in routine.Exercises)
             {
-                Console.WriteLine(
-                    $"{number}. {exercise.Name}");
+                Console.WriteLine($"{number}. {exercise.Name}");
 
-                Console.WriteLine(
-                    $"   {exercise.Execute()}");
+                Console.WriteLine($"   {exercise.Execute()}");
 
                 number++;
             }
@@ -171,9 +165,7 @@ public class ExerciseMenu
 
         var muscleGroupInput = Console.ReadLine();
 
-        if (!TryParseMuscleGroup(
-                muscleGroupInput,
-                out var muscleGroup))
+        if (!TryParseMuscleGroup(muscleGroupInput, out var muscleGroup))
         {
             Console.WriteLine("Invalid muscle group.");
             Console.ReadKey();
@@ -182,9 +174,7 @@ public class ExerciseMenu
 
         Console.Write("Sets: ");
 
-        if (!int.TryParse(
-                Console.ReadLine(),
-                out var sets))
+        if (!int.TryParse(Console.ReadLine(), out var sets))
         {
             Console.WriteLine("Invalid number of sets.");
             Console.ReadKey();
@@ -193,9 +183,7 @@ public class ExerciseMenu
 
         Console.Write("Repetitions: ");
 
-        if (!int.TryParse(
-                Console.ReadLine(),
-                out var repetitions))
+        if (!int.TryParse(Console.ReadLine(), out var repetitions))
         {
             Console.WriteLine("Invalid number of repetitions.");
             Console.ReadKey();
@@ -204,9 +192,7 @@ public class ExerciseMenu
 
         Console.Write("Weight (kg): ");
 
-        if (!decimal.TryParse(
-                Console.ReadLine(),
-                out var weight))
+        if (!decimal.TryParse(Console.ReadLine(), out var weight))
         {
             Console.WriteLine("Invalid weight.");
             Console.ReadKey();
@@ -239,8 +225,7 @@ public class ExerciseMenu
             else
             {
                 Console.WriteLine();
-                Console.WriteLine(
-                    $"Exercise created successfully: {exercise.Name}");
+                Console.WriteLine($"Exercise created successfully: {exercise.Name}");
             }
         }
         catch (ArgumentException ex)
@@ -275,9 +260,7 @@ public class ExerciseMenu
 
         var muscleGroupInput = Console.ReadLine();
 
-        if (!TryParseMuscleGroup(
-                muscleGroupInput,
-                out var muscleGroup))
+        if (!TryParseMuscleGroup(muscleGroupInput, out var muscleGroup))
         {
             Console.WriteLine("Invalid muscle group.");
             Console.ReadKey();
@@ -286,9 +269,7 @@ public class ExerciseMenu
 
         Console.Write("Duration (minutes): ");
 
-        if (!double.TryParse(
-                Console.ReadLine(),
-                out var durationMinutes))
+        if (!double.TryParse(Console.ReadLine(), out var durationMinutes))
         {
             Console.WriteLine("Invalid duration.");
             Console.ReadKey();
@@ -297,9 +278,7 @@ public class ExerciseMenu
 
         Console.Write("Distance (km): ");
 
-        if (!decimal.TryParse(
-                Console.ReadLine(),
-                out var distance))
+        if (!decimal.TryParse(Console.ReadLine(), out var distance))
         {
             Console.WriteLine("Invalid distance.");
             Console.ReadKey();
@@ -331,8 +310,7 @@ public class ExerciseMenu
             else
             {
                 Console.WriteLine();
-                Console.WriteLine(
-                    $"Exercise created successfully: {exercise.Name}");
+                Console.WriteLine($"Exercise created successfully: {exercise.Name}");
             }
         }
         catch (ArgumentException ex)
@@ -344,41 +322,27 @@ public class ExerciseMenu
         Console.ReadKey();
     }
 
-    private static bool TryParseMuscleGroup(
-    string? input,
-    out MuscleGroup muscleGroup)
+    private static bool TryParseMuscleGroup(string? input, out MuscleGroup muscleGroup)
     {
         muscleGroup = default;
 
         return input switch
         {
-            "1" => SetMuscleGroup(
-                MuscleGroup.Chest,
-                out muscleGroup),
+            "1" => SetMuscleGroup(MuscleGroup.Chest, out muscleGroup),
 
-            "2" => SetMuscleGroup(
-                MuscleGroup.Back,
-                out muscleGroup),
+            "2" => SetMuscleGroup(MuscleGroup.Back, out muscleGroup),
 
-            "3" => SetMuscleGroup(
-                MuscleGroup.Legs,
-                out muscleGroup),
+            "3" => SetMuscleGroup(MuscleGroup.Legs, out muscleGroup),
 
-            "4" => SetMuscleGroup(
-                MuscleGroup.Shoulders,
-                out muscleGroup),
+            "4" => SetMuscleGroup(MuscleGroup.Shoulders, out muscleGroup),
 
-            "5" => SetMuscleGroup(
-                MuscleGroup.Arms,
-                out muscleGroup),
+            "5" => SetMuscleGroup(MuscleGroup.Arms, out muscleGroup),
 
             _ => false
         };
     }
 
-    private static bool SetMuscleGroup(
-    MuscleGroup value,
-    out MuscleGroup muscleGroup)
+    private static bool SetMuscleGroup(MuscleGroup value, out MuscleGroup muscleGroup)
     {
         muscleGroup = value;
         return true;

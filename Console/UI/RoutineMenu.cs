@@ -9,10 +9,7 @@ public class RoutineMenu
     private readonly AppSession _session;
     private readonly ExerciseMenu _exerciseMenu;
 
-    public RoutineMenu(
-    RoutineService routineService,
-    AppSession session,
-    ExerciseMenu exerciseMenu)
+    public RoutineMenu(RoutineService routineService, AppSession session, ExerciseMenu exerciseMenu)
     {
         _routineService = routineService;
         _session = session;
@@ -152,8 +149,7 @@ public class RoutineMenu
 
             foreach (var routine in user.Routines)
             {
-                Console.WriteLine(
-                    $"{number}. {routine.Name} - {routine.TrainingGoal}");
+                Console.WriteLine($"{number}. {routine.Name} - {routine.TrainingGoal}");
 
                 number++;
             }
@@ -189,8 +185,7 @@ public class RoutineMenu
 
         for (var i = 0; i < routines.Count; i++)
         {
-            Console.WriteLine(
-                $"{i + 1}. {routines[i].Name} - {routines[i].TrainingGoal}");
+            Console.WriteLine($"{i + 1}. {routines[i].Name} - {routines[i].TrainingGoal}");
         }
 
         Console.WriteLine();
@@ -217,49 +212,35 @@ public class RoutineMenu
 
         Console.Clear();
 
-        Console.WriteLine(
-            $"=== {selectedRoutine.Name} ===");
+        Console.WriteLine($"=== {selectedRoutine.Name} ===");
 
         Console.WriteLine();
-        Console.WriteLine(
-            $"Goal: {selectedRoutine.TrainingGoal}");
+        Console.WriteLine($"Goal: {selectedRoutine.TrainingGoal}");
 
         Console.WriteLine();
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }
 
-    private static bool TryParseTrainingGoal(
-        string? input,
-        out Domain.Enums.TrainingGoal goal)
+    private static bool TryParseTrainingGoal(string? input, out Domain.Enums.TrainingGoal goal)
     {
         goal = default;
 
         return input switch
         {
-            "1" => SetGoal(
-                Domain.Enums.TrainingGoal.GeneralFitness,
-                out goal),
+            "1" => SetGoal(Domain.Enums.TrainingGoal.GeneralFitness, out goal),
 
-            "2" => SetGoal(
-                Domain.Enums.TrainingGoal.Strength,
-                out goal),
+            "2" => SetGoal(Domain.Enums.TrainingGoal.Strength, out goal),
 
-            "3" => SetGoal(
-                Domain.Enums.TrainingGoal.MuscleGain,
-                out goal),
+            "3" => SetGoal(Domain.Enums.TrainingGoal.MuscleGain, out goal),
 
-            "4" => SetGoal(
-                Domain.Enums.TrainingGoal.WeightLoss,
-                out goal),
+            "4" => SetGoal(Domain.Enums.TrainingGoal.WeightLoss, out goal),
 
             _ => false
         };
     }
 
-    private static bool SetGoal(    
-        Domain.Enums.TrainingGoal value,
-        out Domain.Enums.TrainingGoal goal)
+    private static bool SetGoal(Domain.Enums.TrainingGoal value, out Domain.Enums.TrainingGoal goal)
     {
         goal = value;
         return true;

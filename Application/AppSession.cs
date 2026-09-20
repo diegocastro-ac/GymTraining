@@ -5,7 +5,6 @@ namespace Application
     public class AppSession
     {
         public User? CurrentUser { get; private set; }
-
         public Routine? CurrentRoutine { get; private set; }
 
         public void SelectUser(User user)
