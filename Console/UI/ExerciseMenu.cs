@@ -159,6 +159,7 @@ public class ExerciseMenu
         Console.WriteLine("3. Legs");
         Console.WriteLine("4. Shoulders");
         Console.WriteLine("5. Arms");
+        Console.WriteLine("6. Core");
         Console.WriteLine();
 
         Console.Write("Select a muscle group: ");
@@ -254,6 +255,7 @@ public class ExerciseMenu
         Console.WriteLine("3. Legs");
         Console.WriteLine("4. Shoulders");
         Console.WriteLine("5. Arms");
+        Console.WriteLine("6. Core");
         Console.WriteLine();
 
         Console.Write("Select a muscle group: ");
@@ -337,6 +339,8 @@ public class ExerciseMenu
             "4" => SetMuscleGroup(MuscleGroup.Shoulders, out muscleGroup),
 
             "5" => SetMuscleGroup(MuscleGroup.Arms, out muscleGroup),
+
+            "6" => SetMuscleGroup(MuscleGroup.Core, out muscleGroup),
 
             _ => false
         };
