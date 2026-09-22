@@ -11,12 +11,14 @@ var routineService = new RoutineService(userRepository);
 var exerciseService = new ExerciseService(userRepository);
 
 var generatorResolver = new RoutineGeneratorResolver();
+var nutritionPlanResolver = new NutritionPlanResolver();
 
 var session = new AppSession();
 
 var exerciseMenu = new ExerciseMenu(exerciseService, session);
 var routineMenu = new RoutineMenu(routineService, session, exerciseMenu, generatorResolver);
+var nutritionMenu = new NutritionMenu(nutritionPlanResolver, session);
 
-var app = new ConsoleApp(userService, session, routineMenu);
+var app = new ConsoleApp(userService, session, routineMenu, nutritionMenu);
 
 app.Run();

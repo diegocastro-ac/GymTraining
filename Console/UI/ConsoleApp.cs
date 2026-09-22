@@ -8,15 +8,18 @@ public class ConsoleApp
     private readonly UserService _userService;
     private readonly AppSession _session;
     private readonly RoutineMenu _routineMenu;
+    private readonly NutritionMenu _nutritionMenu;
 
     public ConsoleApp(
     UserService userService,
     AppSession session,
-    RoutineMenu routineMenu)
+    RoutineMenu routineMenu,
+    NutritionMenu nutritionMenu)
     {
         _userService = userService;
         _session = session;
         _routineMenu = routineMenu;
+        _nutritionMenu = nutritionMenu;
     }
 
     public void Run()
@@ -80,7 +83,8 @@ public class ConsoleApp
         Console.WriteLine();
         Console.WriteLine("1. Manage routines");
         Console.WriteLine("2. Change user");
-        Console.WriteLine("3. Exit");
+        Console.WriteLine("3. Nutrition plan");
+        Console.WriteLine("4. Exit");
         Console.WriteLine();
 
         Console.Write("Select an option: ");
@@ -98,6 +102,10 @@ public class ConsoleApp
                 return true;
 
             case "3":
+                ManageNutrition();
+                return true;
+
+            case "4":
                 return false;
 
             default:
@@ -110,6 +118,11 @@ public class ConsoleApp
     private void ManageRoutines()
     {
         _routineMenu.Run();
+    }
+
+    private void ManageNutrition()
+    {
+        _nutritionMenu.Run();
     }
 
     private void CreateUser()

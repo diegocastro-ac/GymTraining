@@ -23,6 +23,7 @@ Aplicación de consola para la gestión de entrenamientos: usuarios, rutinas y e
 - Crear rutinas de entrenamiento, asociadas a un objetivo (`TrainingGoal`).
 - Generar automáticamente una rutina completa según el objetivo seleccionado (fuerza, hipertrofia, resistencia, fitness general, ganancia muscular o pérdida de peso), pre-cargada con ejercicios y volúmenes coherentes.
 - Añadir ejercicios de fuerza o cardio a una rutina existente, con validación de sus datos (series, repeticiones, peso, duración, distancia).
+- Generar un plan de nutrición según el objetivo (fuerza o pérdida de peso): macros diarias, plan de comidas y suplementos coherentes entre sí.
 - Ver la rutina y ejecutar los ejercicios que la componen.
 
 ## Requisitos
